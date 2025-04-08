@@ -100,5 +100,5 @@ sudo apt install build-essential
 
 ## Authors
 Team 208
-**Hyeong-Jin-Lee**
+**Hyeong-Jin-Lee**,
 **Tae-Jin-Choi**
