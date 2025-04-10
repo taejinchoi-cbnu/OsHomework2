@@ -149,8 +149,13 @@ void run_game(char *agent_x, char *agent_y) {
 
         // Set timeout
         alarm(TIMEOUT);
-        read(pipe_from_agent[0], input_buf, sizeof(input_buf));
-        
+        ssize_t bytes_read = read(pipe_from_agent[0], input_buf, sizeof(input_buf) - 1);
+        if (bytes_read == -1) {
+            perror("read failed");
+            exit(1);
+        }
+        input_buf[bytes_read] = 0x0;
+
         // Clear timeout
         alarm(0);
         move = input_buf[0];

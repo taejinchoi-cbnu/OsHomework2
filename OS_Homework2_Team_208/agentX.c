@@ -96,7 +96,11 @@ int find_blocking_move(int player) {
 
 int main() {
     // Read player number
-    scanf("%d", &this_player);
+    if (scanf("%d", &this_player) != 1) {
+        perror("scanf failed");
+        return EXIT_FAILURE;
+    }
+
     if (this_player != 1 && this_player != 2) return EXIT_FAILURE;
 
     for (int i = ROWS; i > 0; i--) {
@@ -118,7 +122,7 @@ int main() {
         printf("%c", 'A' + choice - 1);
         return EXIT_SUCCESS;
     }
-    
+
     // Random move if no winning or blocking move
     srand(time(NULL));
     do {
