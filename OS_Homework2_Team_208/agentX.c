@@ -111,13 +111,13 @@ int main() {
     }
 
     // Finding winning move
-    int choice = find_winning_move(this_player); // 0 is no winning move
+    int choice = find_winning_move(this_player); // choice == 0 is no winning move
     if (choice) {
         printf("%c", 'A' + choice - 1);
         return EXIT_SUCCESS;
     }
 
-    choice = find_blocking_move(this_player); // 0 is no blocking move
+    choice = find_blocking_move(this_player); // choice == 0 is no blocking move
     if (choice) {
         printf("%c", 'A' + choice - 1);
         return EXIT_SUCCESS;
