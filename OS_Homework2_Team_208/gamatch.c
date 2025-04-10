@@ -53,11 +53,12 @@ void print_usage(void) {
     printf("Usage: ./gamatch -X <agent-binary> -Y <agent-binary>\n");
 }
 
+// Main game function
 void run_game(char *agent_x, char *agent_y) {
     char board[ROWS][COLS];
     int current_player = 1; // 1 is X, 2 is Y
     int winner = 0; // 0 is progress, 1 is X win, 2 is Y win, 3 is draw
-    int moves = 0; // Agent's Su
+    int moves = 0; // Turn count
 
     // Init board
     for (int i = 0; i < ROWS; i++) {
@@ -72,8 +73,8 @@ void run_game(char *agent_x, char *agent_y) {
         pid_t pid;
         char move;
         char player_char = (current_player == 1) ? '1' : '2';
-        int col_index;
-        char input_buffer[10];
+        int col_idx;
+        char input_buf[10];
         
         // Create pipe
         if (pipe(pipe_to_agent) != 0 || pipe(pipe_from_agent) != 0) {
@@ -148,11 +149,11 @@ void run_game(char *agent_x, char *agent_y) {
 
         // Set timeout
         alarm(TIMEOUT);
-        read(pipe_from_agent[0], input_buffer, sizeof(input_buffer));
+        read(pipe_from_agent[0], input_buf, sizeof(input_buf));
         
         // Clear timeout
         alarm(0);
-        move = input_buffer[0];
+        move = input_buf[0];
         close(pipe_from_agent[0]);
 
         printf("\n%c\n", player_char);
@@ -166,8 +167,8 @@ void run_game(char *agent_x, char *agent_y) {
         }
 
         // Check full column
-        col_index = move - 'A';
-        if (board[0][col_index] != '0') {
+        col_idx = move - 'A';
+        if (board[0][col_idx] != '0') {
             printf("\nColumn is full! %c wins.\n", (current_player == 1) ? '2' : '1');
             winner = (current_player == 1) ? 2 : 1;
             break;
@@ -175,8 +176,8 @@ void run_game(char *agent_x, char *agent_y) {
 
         // Place stone
         for (int i = ROWS - 1; i >= 0; i--) {
-            if (board[i][col_index] == '0') {
-                board[i][col_index] = player_char;
+            if (board[i][col_idx] == '0') {
+                board[i][col_idx] = player_char;
                 break;
             }
         }
@@ -186,7 +187,7 @@ void run_game(char *agent_x, char *agent_y) {
         if (winner != 0) break;
 
         current_player = (current_player == 1) ? 2 : 1;
-        sleep(1);
+        sleep(1); // For human-readable manner
     }
 
     // Print result
@@ -205,6 +206,7 @@ void run_game(char *agent_x, char *agent_y) {
     wait(NULL);
 }
 
+// Print current board
 void print_board(char board[ROWS][COLS]) {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
@@ -236,7 +238,7 @@ int check_winner(char board[ROWS][COLS]) {
         }
     }
 
-    // Check diagonal (down right \ )
+    // Check diagonal (down right \)
     for (int i = 0; i <= ROWS - 4; i++) {
         for (int j = 0; j <= COLS - 4; j++) {
             if (board[i][j] != '0' && board[i][j] == board[i + 1][j + 1] &&
@@ -246,7 +248,7 @@ int check_winner(char board[ROWS][COLS]) {
         }
     }
 
-    // Check diagonal (down left / )
+    // Check diagonal (down left /)
     for (int i = 0; i <= ROWS - 4; i++) {
         for (int j = COLS - 1; j >= 3; j--) {
             if (board[i][j] != '0' && board[i][j] == board[i + 1][j - 1] &&
