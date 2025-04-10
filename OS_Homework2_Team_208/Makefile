@@ -12,12 +12,12 @@ gamatch: gamatch.c
 	$(CC) $(CFLAGS) -o gamatch gamatch.c
 
 # Build agentX
-agentX: AgentX.c
-	$(CC) $(CFLAGS) -o agentX AgentX.c
+agentX: agentX.c
+	$(CC) $(CFLAGS) -o agentX agentX.c
 
 # Build agentY
-agentY: AgentY.c
-	$(CC) $(CFLAGS) -o agentY AgentY.c
+agentY: agentY.c
+	$(CC) $(CFLAGS) -o agentY agentY.c
 
 # Clean up
 clean:

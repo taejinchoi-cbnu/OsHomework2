@@ -25,7 +25,10 @@ Follow these steps to build the project:
 
 2. **Build the project**:
    Open a terminal in the project directory and run:
+   ```bash
+   make
    This will generate three executable files: `gamatch`, `agentX`, and `agentY`.
+   ```
 
 3. **Clean up (optional)**: To remove the generated executables, run: `make clean`
 
