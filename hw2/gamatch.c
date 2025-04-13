@@ -36,7 +36,7 @@ void signal_handler(int sig) {
 int main(int argc, char *argv[]) {
     if (argc != 5 || strcmp(argv[1], "-X") != 0 || strcmp(argv[3], "-Y") != 0) {
         print_usage();
-        return 1;
+        exit(1);
     }
 
     char *agent_x = argv[2];
@@ -148,7 +148,11 @@ void run_game(char *agent_x, char *agent_y) {
         close(pipe_to_agent[1]);
 
         // Set timeout
-        alarm(TIMEOUT);
+	alarm(TIMEOUT);
+	/*  Demonstrate timeout...
+	if (current_player == 2) {
+		sleep(4);
+	}*/
         ssize_t bytes_read = read(pipe_from_agent[0], input_buf, sizeof(input_buf) - 1);
         if (bytes_read == -1) {
             perror("read failed");
@@ -159,10 +163,14 @@ void run_game(char *agent_x, char *agent_y) {
         // Clear timeout
         alarm(0);
         move = input_buf[0];
-        close(pipe_from_agent[0]);
-
+	/*  Demonstrate invalid input 
+	if(current_player == 2) {
+		move = 'H';
+	}*/
+	close(pipe_from_agent[0]);
+	
         printf("\n%c\n", player_char);
-        print_board(board);
+	print_board(board);
 
         // Check invalid input
         if (move < 'A' || move > 'G') {
@@ -189,10 +197,16 @@ void run_game(char *agent_x, char *agent_y) {
 
         moves++;
         winner = check_winner(board);
-        if (winner != 0) break;
+        
+        // Print the board one last time to show the winning move
+	if (winner != 0) {
+		printf("\n%c\n", player_char);
+		print_board(board);
+		break;
+	}
 
         current_player = (current_player == 1) ? 2 : 1;
-        sleep(1); // For human-readable manner
+	sleep(1); // For human-readable manner
     }
 
     // Print result
