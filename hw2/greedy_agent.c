@@ -48,3 +48,103 @@ int count_right (int stack, int level, int player)
 
 int count_down_left (int stack, int level, int player) 
 {
+	return _count(stack + leftward, level + downward, leftward, downward, player) ;
+}
+
+int count_down_right (int stack, int level, int player)
+{
+	return _count(stack + rightward, level + downward, rightward, downward, player) ;
+}
+
+int count_up_left (int stack, int level, int player) 
+{
+	return _count(stack + leftward, level + upward, leftward, upward, player) ;
+}
+
+int count_up_right (int stack, int level, int player)
+{
+	return _count(stack + rightward, level + upward, rightward, upward, player) ;
+}
+
+int greedy_offense (int player)
+{
+	int stack ;
+
+	for (stack = 1 ; stack <= n_stacks ; stack++) {
+		if (top[stack] > stack_cap /* fully-filled */) 
+			continue ;
+
+		if (count_down(stack, top[stack], player) == 3)
+			return stack ;
+
+		if (count_left(stack, top[stack], player) + count_right(stack, top[stack], player) == 3)
+			return stack ;
+
+		if (count_down_left(stack, top[stack], player) + count_up_right(stack, top[stack], player) == 3)
+			return stack ;
+
+		if (count_up_left(stack, top[stack], player) + count_down_right(stack, top[stack], player) == 3)
+			return stack ;
+	}
+	return 0 ;
+}
+
+int greedy_defense (int player) 
+{
+	int other_player = 3 - player ;
+
+	int stack ;
+	for (stack = 1 ; stack <= n_stacks ; stack++) {
+		if (top[stack] == stack_cap /* fully-filled */) 
+			continue ;
+
+		if (count_down(stack, top[stack], other_player) == 3)
+			return stack ;
+
+		if (count_left(stack, top[stack], other_player) + count_right(stack, top[stack], other_player) == 3)
+			return stack ;
+
+		if (count_down_left(stack, top[stack], other_player) + count_up_right(stack, top[stack], other_player) == 3)
+			return stack ;
+
+		if (count_up_left(stack, top[stack], other_player) + count_down_right(stack, top[stack], other_player) == 3)
+			return stack ;
+	}
+
+	return 0 ;
+}
+
+int main ()
+{
+	int i, j ; 
+
+	scanf("%d", &this_player) ;
+	if (this_player != 1 && this_player != 2) 
+		return EXIT_FAILURE ;
+
+	for (i = stack_cap ; i > 0 ; i--) {
+		for (j = 1 ; j <= n_stacks ; j++) {
+			scanf("%d", &(board[i][j])) ;
+			if (board[i][j] != 0 && top[j] == 1) {
+				top[j] = i + 1 ;
+			}
+		}
+	}
+
+	char choice ;
+	if (choice = greedy_offense(this_player)) {
+	 	printf("%c", 'A' + choice - 1) ;
+		return EXIT_SUCCESS ;
+	}
+
+	if (choice = greedy_defense(this_player)) {
+		printf("%c", 'A' + choice - 1) ;
+		return EXIT_SUCCESS ;
+	}
+	
+	srand(time(NULL)) ;
+	choice = rand() % n_stacks ;
+	printf("%c", 'A' + choice) ;
+
+	return EXIT_SUCCESS ;
+}

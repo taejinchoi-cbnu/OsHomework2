@@ -1,7 +1,7 @@
 // OS Homework2 Team 208
 // Agent binary code (used for both AgentX and AgentY)
 /*
- * Based on the example codes but our agent is designed to be more aggressive.
+ * Based on the example codes, our agent is designed to be more aggressive.
  * It only defends when the opponent has 3 stones connected, and otherwise always focuses on attacking.
  */
 
@@ -75,7 +75,7 @@ int count_left(int stack, int level, int player) {
     return count_adjacent_stones(stack + LEFTWARD, level, LEFTWARD, 0, player);
 }
 
-[Oint count_right(int stack, int level, int player) {
+int count_right(int stack, int level, int player) {
     return count_adjacent_stones(stack + RIGHTWARD, level, RIGHTWARD, 0, player);
 }
 
@@ -156,20 +156,20 @@ int evaluate_move(int stack, int player, int other_player) {
     if (stack == 3) score += 10; // Column D
     else if (stack == 2 || stack == 4) score += 5; // Columns C and E
 
-    return score;
+OAOAOA    return score;
 }
-
-int main() {
-    // Read player number
+OAOAOA
+OAOAOAint main() {
+OAOAOA    // Read player number
     if (scanf("%d", &this_player) != 1) {
-        fprintf(stderr, "Error: Failed to read player number\n");
+OAOAOA        fprintf(stderr, "Error: Failed to read player number\n");
         return EXIT_FAILURE;
-    }
-    if (this_player != 1 && this_player != 2) {
+OAOAOA    }
+OAOAOA    if (this_player != 1 && this_player != 2) {
         fprintf(stderr, "Error: Invalid player number %d\n", this_player);
         return EXIT_FAILURE;
     }
-
+OAOAOA
     // Initialize top array
     for (int j = 0; j < COLS; j++) {
         top[j] = 0;
